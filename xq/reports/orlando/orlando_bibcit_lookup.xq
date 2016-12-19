@@ -98,7 +98,7 @@ return
           {
             (: output details of the referenced bibliography entry :) 
             (: ToDo: 2015-07-21 - switch to only @pid when feasible :)
-            let $bibl := cwAccessibility:queryAccessControl(/)[@pid/data()=$group_by_id]
+            let $bibl := cwAccessibility:queryAccessControl(/)[@uri/data()=$group_by_id]
             return local:outputBiblDetails($group_by_id, $bibl) 
           }
           <ul>
