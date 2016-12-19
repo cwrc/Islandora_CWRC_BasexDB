@@ -635,7 +635,19 @@ function drush_islandora_cwrc_basexdb_test_delete()
 
 function drush_islandora_cwrc_basexdb_test_xq()
 {
+  module_load_include('inc', 'islandora_cwrc_basexdb', 'includes/xmldb_endpoints');
+  $xq_file = ISLANDORA_ORLANDO_RPT_BIBCITS;
+  $result = null;
+  $keyValueArray = array(
+    "FEDORA_PID" => "orlando:9f0c5add-7167-41bd-8111-77e0cff09ed5"
+    );
 
+  $result = islandora_cwrc_exec_xquery($xq_file, $keyValueArray);
+  
+  drush_print($result);
+
+
+/*
   // Include modules.
   module_load_include('inc', 'islandora_cwrc_basexdb', 'includes/helpers');
   module_load_include('inc', 'islandora_cwrc_basexdb', 'includes/xmldb_basex');
@@ -696,6 +708,7 @@ function drush_islandora_cwrc_basexdb_test_xq()
   drush_print($basexObj->basexSession->info());
 
   $basexObj->close();
+ */
 
 
 }
