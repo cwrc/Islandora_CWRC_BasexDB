@@ -12,6 +12,7 @@ define('ISLANDORA_EAP_EXTERNAL_MISSING_STUBS', 'cwrc_list_missing_entity_stubs.x
 define('ISLANDORA_ORLANDO_MIGRATE_PERSON_ORG', 'orlando_migration/orlando_entity_lookup_person_org.xq');
 define('ISLANDORA_ORLANDO_MIGRATE_BIBL', 'orlando_migration/orlando_entity_lookup_bibl.xq');
 define('ISLANDORA_ORLANDO_RPT_BIBCITS', 'reports/orlando/orlando_bibcit_lookup.xq');
+define('ISLANDORA_ORLANDO_RPT_CORE_TAGS', 'reports/orlando/orlando_core_tags_lookup.xq');
 
 
 /**
@@ -158,6 +159,7 @@ function islandora_cwrc_basexdb_whitelist_path($str)
     , ISLANDORA_ORLANDO_MIGRATE_PERSON_ORG => ISLANDORA_ORLANDO_MIGRATE_PERSON_ORG
     , ISLANDORA_ORLANDO_MIGRATE_BIBL => ISLANDORA_ORLANDO_MIGRATE_BIBL
     , ISLANDORA_ORLANDO_RPT_BIBCITS => ISLANDORA_ORLANDO_RPT_BIBCITS 
+    , ISLANDORA_ORLANDO_RPT_CORE_TAGS => ISLANDORA_ORLANDO_RPT_CORE_TAGS 
   );
 
   return $islandora_cwrc_basexdb_whitelist[$str];

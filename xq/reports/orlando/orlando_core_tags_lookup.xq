@@ -1,6 +1,30 @@
 (: 
 *
-* core tags within documents  - biography/writing/events 
+* Test core tags within documents  - biography/writing/events 
+*
+*
+* View linked person/org within documents  - biography/writing/events
+* and report on whether or not the linking is working (e.g., name/@ref
+* to an entity item) and the workflow status of the bibliography item
+* (e.g., PUB-C or not).
+* 
+* replace the Orlando Doc Archive Core Tag Lookup Report
+* use "@REF" URI's instead of "@DBREF" attributes for linking
+* 
+* Input:
+*   PID of a Fedora object
+*
+* output
+*   HTML in the form of a report
+*
+*   Details about a bibliographic item
+*     detail about each citation within the specifed document.
+*     detail about each citation within the specifed document.
+*     detail about each citation within the specifed document.
+*     ...
+*
+*   Details about a bibliographic item
+*     ...
 *
 *
 :)
@@ -18,6 +42,35 @@ declare option output:indent   "no";
 
 declare variable $FEDORA_PID external := "";
 declare variable $BASE_URL external := "";
+
+
+(:
+* helper functions
+:)
+
+
+(:
+* given a uri an XML node, report on the different properties
+:)
+declare function local:outputEntityDetails($ref_id, $entity)
+{
+  let $workflow := $entity/WORKFLOW_DS/cwrc/workflow
+  return
+  (
+    if ( $workflow/activity[@stamp="orlando:PUB"] and $workflow/activity[@status="c"] ) then
+      <strong class="pub_c">{$entity/@label/data()} - id:{$ref_id} - PUB-C {local:entityHref($entity/@pid/data())}</strong>
+    else if ( $workflow/activity[@stamp="orlando:CAS"] and $workflow/activity[@status="c"] ) then
+      <em class="cas_c">{$entity/@label/data()} - id:{$ref_id} - CAS-C {local:entityHref($entity/@pid/data())}</em>
+    else if ( $workflow ) then
+      <d class="non_pub_c"><strong>No PUB-C/CAS-C</strong> - {$entity/@label/data()} - id:{$ref_id} {local:entityHref($entity/@pid/data())}</d>
+    else if ( $entity ) then
+      <d class="warning">{$ref_id} no responsibility found {local:entityHref($entity/@pid/data())}</d>
+    else if ( $ref_id ) then
+      <d class="error">{$ref_id} - no matching object found </d>
+    else
+      <d class="error">REF attribute missing</d>
+  )
+};
 
 
 declare function local:entityHref($id)
@@ -51,44 +104,38 @@ return
       <a href="{$doc_href}">{$doc_label}</a>
     </h2>
     <div class="xquery_result_list">
-      <ul>
-      {
-        (: find the researchnote elements and output  :)
-        for $item in $accessible_seq/CWRC_DS//(PLACE|NAME|ORGNAME|TITLE|DATE|DATERANGE|DATESTRUCT)[not(parent::RESPONSIBILITY)]
-        let $str := fn:string-join($item//text())
-        return
-          <li>{$item/name()} - text: {$str}
-            {
-              if ( $item/name() = ('NAME', 'ORGNAME')) then
-                (: lookup standard name :)
-                let $standard_name :=
-                  if ($item/@STANDARD) then
-                    $item/@STANDARD/data()
-                  else if ($item/name() = 'NAME') then
-                    local:convertStandardName($str)
-                  else
-                    $str
-                return
-                  (: query standard name :)
-                  let $target := cwAccessibility:queryAccessControl(/)[@pid/data()=$item/@REF/data() or (PERSON_DS | ORGANIZATION_DS)/entity/(person | organization)/identity/variantForms/variant[variantType/text()='orlandoStandardName']/namePart/text() = $standard_name]
-                  return
-                    if (not($target)) then
-                      <d class="error"> - {$standard_name} - no matching entity item found </d>
-                    else
-                      local:entityHref($target/@pid/data())
-              else
-                ()
-            }
-            {
-              for $attr in $item//@*
-              return
-                <ul>
-                  <li>{$attr/name()} : {$attr/data()}</li>
-                </ul>
-            }
-          </li>
-      }
-      </ul>
+    {
+      (: find the core tag elements (not in responsibility statements :)
+      for $item in $accessible_seq/CWRC_DS//(NAME|ORGNAME|PLACE|TITLE)[not(parent::RESPONSIBILITY)]
+      let $group_by_id := $item/@REF/data()
+      group by $group_by_id
+      order by $group_by_id 
+      return
+        <div>
+        {
+          (: output details of the referenced entry :)
+          let $entity := cwAccessibility:queryAccessControl(/)[@uri/data()=$group_by_id]
+          return local:outputEntityDetails($group_by_id, $entity)
+        }
+        <ul>
+        {
+          (: output placeholder and tag text of bibcit or textscope :)
+          for $a in $accessible_seq//(NAME|ORGNAME|PLACE|TITLE)[
+            (@REF = $group_by_id) or (fn:empty($group_by_id) and not(@REF))
+            ]
+          let $str := fn:string-join($a/text())
+          let $elm := $a/name()
+          let $ref := $a/@REF/data()
+          let $alt := $a/@STANDARD/data()
+          group by $elm, $str, $ref, $alt
+          order by $elm, $str, $ref, $alt
+          return
+            <li>[{$elm}] REF:[{$ref}] - STANDARD:[{$alt}] - Text:[{$str}]</li>
+
+        }
+        </ul>
+      </div>
+    }
     </div>
   </div>
 

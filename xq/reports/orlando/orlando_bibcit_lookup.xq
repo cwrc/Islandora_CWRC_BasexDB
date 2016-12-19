@@ -45,6 +45,10 @@ declare variable $BASE_URL external := "";
 * helper functions
 :)
 
+
+(:
+* given a uri an XML node, report on the different properties
+:)
 declare function local:outputBiblDetails($ref_id, $bibl)
 {
   let $workflow := $bibl/WORKFLOW_DS/cwrc/workflow
@@ -88,8 +92,8 @@ return
     <div class="xquery_result_list">
     {
       (: find the bibcit and textscope bibl references (combine duplicates) :)
-      for $elm in $accessible_seq/CWRC_DS//(BIBCIT|TEXTSCOPE)
-      let $group_by_id := $elm/@REF/data()
+      for $item in $accessible_seq/CWRC_DS//(BIBCIT|TEXTSCOPE)
+      let $group_by_id := $item/@REF/data()
       group by $group_by_id
       order by $group_by_id
       return
