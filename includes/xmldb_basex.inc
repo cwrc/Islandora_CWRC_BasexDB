@@ -158,15 +158,26 @@ class xmldb_basex {
   **/
   protected function basexdb_do_replace($fedora_object)
   {
+    // get the base of the entity uri
+    $base_uri = $this->config->basexdb_base_uri;
+    if ($base_uri)
+    {
+      (substr($base_uri,-1)!='/') ? $base_uri.='/' : $base_uri;
+    }
+
     // enable user error handling
     libxml_use_internal_errors(true);
 
+    // build XML DB representation
     $dom = new DomDocument("1.0", "UTF-8");
     // create the relative root node for this object
     // and its attribute values
     $rootNode = $dom->createElement("obj");
     $tmpAttr = $dom->createAttribute("pid");
     $tmpAttr->value = $fedora_object->id;
+    $rootNode->appendChild($tmpAttr);
+    $tmpAttr = $dom->createAttribute("uri");
+    $tmpAttr->value = $base_uri . $fedora_object->id;
     $rootNode->appendChild($tmpAttr);
     $tmpAttr = $dom->createAttribute("label");
     $tmpAttr->value = $fedora_object->label;
