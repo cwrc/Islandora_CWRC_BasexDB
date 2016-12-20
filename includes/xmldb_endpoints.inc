@@ -13,6 +13,10 @@ define('ISLANDORA_ORLANDO_MIGRATE_PERSON_ORG', 'orlando_migration/orlando_entity
 define('ISLANDORA_ORLANDO_MIGRATE_BIBL', 'orlando_migration/orlando_entity_lookup_bibl.xq');
 define('ISLANDORA_ORLANDO_RPT_BIBCITS', 'reports/orlando/orlando_bibcit_lookup.xq');
 define('ISLANDORA_ORLANDO_RPT_CORE_TAGS', 'reports/orlando/orlando_core_tags_lookup.xq');
+define('ISLANDORA_ORLANDO_RPT_CHRON_BIBL', 'reports/orlando/orlando_chronstruct_bibcit_test.xq');
+define('ISLANDORA_ORLANDO_RPT_QUOTES_LUP', 'reports/orlando/orlando_quotes_lookup.xq');
+define('ISLANDORA_ORLANDO_RPT_RESEARCH_NOTES_LUP', 'reports/orlando/orlando_researchnotes_lookup.xq');
+define('ISLANDORA_ORLANDO_RPT_WORKFLOW_NEW', 'reports/orlando/orlando_workflow_new.xq');
 
 
 /**
@@ -160,6 +164,11 @@ function islandora_cwrc_basexdb_whitelist_path($str)
     , ISLANDORA_ORLANDO_MIGRATE_BIBL => ISLANDORA_ORLANDO_MIGRATE_BIBL
     , ISLANDORA_ORLANDO_RPT_BIBCITS => ISLANDORA_ORLANDO_RPT_BIBCITS 
     , ISLANDORA_ORLANDO_RPT_CORE_TAGS => ISLANDORA_ORLANDO_RPT_CORE_TAGS 
+
+    , ISLANDORA_ORLANDO_RPT_CHRON_BIBL => ISLANDORA_ORLANDO_RPT_CHRON_BIBL
+    , ISLANDORA_ORLANDO_RPT_QUOTES_LUP => ISLANDORA_ORLANDO_RPT_QUOTES_LUP
+    , ISLANDORA_ORLANDO_RPT_RESEARCH_NOTES_LUP => ISLANDORA_ORLANDO_RPT_RESEARCH_NOTES_LUP
+    , ISLANDORA_ORLANDO_RPT_WORKFLOW_NEW => ISLANDORA_ORLANDO_RPT_WORKFLOW_NEW
   );
 
   return $islandora_cwrc_basexdb_whitelist[$str];
