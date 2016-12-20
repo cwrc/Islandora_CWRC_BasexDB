@@ -38,7 +38,7 @@ declare option output:encoding "UTF-8";
 declare option output:indent   "no";
 
 
-declare variable $FEDORA_PID external := "orlando:9f0c5add-7167-41bd-8111-77e0cff09ed5";
+declare variable $FEDORA_PID external := "";
 declare variable $BASE_URL external := "";
 
 (:
