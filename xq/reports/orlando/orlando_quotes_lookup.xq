@@ -33,22 +33,29 @@ return
     <div class="xquery_result_list">
       <ul>
       {
-        (: find the researchnote elements and output  :)
-        for $item in $accessible_seq/CWRC_DS//QUOTE
-        let $bibcit_sibling := $item/following-sibling::BIBCITS/BIBCIT
+        (: find the quote elements and output  :)
+        let $set := $accessible_seq/CWRC_DS//QUOTE
         return
-          if ( $bibcit_sibling ) then
-            <li>{$item} 
-            <ul>
-            {
-              for $a in $bibcit_sibling 
-              return 
-                <li>DBREF:[{$a/@DBREF/data()}] - QTDIN:[{$a/@QTDIN/data()}] - Placeholder:[{$a/@PLACEHOLDER/data()}] - Text:[{$a/text()}]</li>
-            }
-            </ul>
-            </li>
+          if ( count($set) > 0 )
+          then
+            for $item in $set 
+            let $bibcit_sibling := $item/following-sibling::BIBCITS/BIBCIT
+            return
+              if ( $bibcit_sibling ) 
+              then
+                <li>{$item} 
+                <ul>
+                {
+                  for $a in $bibcit_sibling 
+                  return 
+                    <li>DBREF:[{$a/@DBREF/data()}] - QTDIN:[{$a/@QTDIN/data()}] - Placeholder:[{$a/@PLACEHOLDER/data()}] - Text:[{$a/text()}]</li>
+                }
+                </ul>
+                </li>
+              else
+                <li class="error">{$item}</li>
           else
-            <li class="error">{$item}</li>
+            <li>No quote elements found.</li>
       }
       </ul>
     </div>

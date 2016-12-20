@@ -34,9 +34,15 @@ return
       <ul>
       {
         (: find the researchnote elements and output  :)
-        for $item in $accessible_seq/CWRC_DS//RESEARCHNOTE
+        let $set := $accessible_seq/CWRC_DS//RESEARCHNOTE
         return
-          <li>{$item}</li>
+          if ( fn:count($set) > 0 ) 
+          then
+            for $item in $set 
+            return
+              <li>{$item}</li>
+          else
+              <li>No research note elements found.</li>
       }
       </ul>
     </div>

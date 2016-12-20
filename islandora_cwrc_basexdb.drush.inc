@@ -638,6 +638,10 @@ function drush_islandora_cwrc_basexdb_test_xq()
   module_load_include('inc', 'islandora_cwrc_basexdb', 'includes/xmldb_endpoints');
   $xq_file = ISLANDORA_ORLANDO_RPT_BIBCITS;
   $xq_file = ISLANDORA_ORLANDO_RPT_CORE_TAGS;
+  $xq_file = ISLANDORA_ORLANDO_RPT_CHRON_BIBL;
+  //$xq_file = ISLANDORA_ORLANDO_RPT_QUOTES_LUP;
+  //$xq_file = ISLANDORA_ORLANDO_RPT_RESEARCH_NOTES_LUP;
+  //$xq_file = ISLANDORA_ORLANDO_RPT_WORKFLOW_NEW;
   $result = null;
   $keyValueArray = array(
     "FEDORA_PID" => "orlando:9f0c5add-7167-41bd-8111-77e0cff09ed5"

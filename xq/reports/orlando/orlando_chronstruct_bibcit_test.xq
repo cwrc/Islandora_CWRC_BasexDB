@@ -33,13 +33,16 @@ return
     <div class="xquery_result_list">
       <ul>
       {
-        (: find the researchnote elements and output  :)
-        for $item in $accessible_seq/CWRC_DS//CHRONSTRUCT
-        let $bibcit_descendant := $item/descendant::BIBCIT
+        (: test for chronstructs containing bibcits and output :)
+        let $set := $accessible_seq/CWRC_DS//CHRONSTRUCT[not(descendant::BIBCIT)]
         return
-          if ( not($bibcit_descendant) ) then
-            <li class="error">{$item}</li>
-          else ()
+          if ( fn:count($set) > 0 )
+          then
+            for $item in $set 
+            return
+              <li class="error">{fn:string-join($item, ' ')}</li>
+          else
+            <li>Each chronstruct element contains at least one bibcit element.</li>
       }
       </ul>
     </div>
