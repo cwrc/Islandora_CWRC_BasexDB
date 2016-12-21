@@ -113,7 +113,7 @@ return
             ]
           order by $a/@PLACEHOLDER/data()
           return
-            <li>REF:[{$a/@REF/data()}] - QTDIN:[{$a/@QTDIN/data()}] - Placeholder:[{$a/@PLACEHOLDER/data()}] - Text:[{$a/text()}]</li>
+            <li>REF:[{$a/@REF/data()}] - QTDIN:[{$a/@QTDIN/data()}] - Placeholder:[{$a/@PLACEHOLDER/data()}] - DBREF:[{$a/@DBREF/data()}] - Text:[{$a/text()}]</li>
           }
           </ul>
         </ul>
