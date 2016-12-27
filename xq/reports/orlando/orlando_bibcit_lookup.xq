@@ -55,15 +55,15 @@ declare function local:outputBiblDetails($ref_id, $bibl)
   return
   (
     if ( $workflow/activity[@stamp="orlando:PUB"] and $workflow/activity[@status="c"] ) then
-      <strong class="pub_c">{$bibl/@label/data()} - id:{$ref_id} - PUB-C {local:bibcitHref($bibl/@pid/data())}</strong>
+      <strong class="pub_c">PUB-C - {$bibl/@label/data()} {local:bibcitHref($bibl/@pid/data())}</strong>
     else if ( $workflow/activity[@stamp="orlando:CAS"] and $workflow/activity[@status="c"] ) then
-      <em class="cas_c">{$bibl/@label/data()} - id:{$ref_id} - CAS-C {local:bibcitHref($bibl/@pid/data())}</em>
+      <em class="cas_c">CAS-C without PUB-C - {$bibl/@label/data()} {local:bibcitHref($bibl/@pid/data())}</em>
     else if ( $workflow ) then
-      <d class="non_pub_c"><strong>No PUB-C/CAS-C</strong> - {$bibl/@label/data()} - id:{$ref_id} {local:bibcitHref($bibl/@pid/data())}</d>
+      <d class="non_pub_c"><strong>No PUB-C/CAS-C Workflow</strong> - {$bibl/@label/data()} {local:bibcitHref($bibl/@pid/data())}</d>
     else if ( $bibl ) then
-      <d class="warning">{$ref_id} no responsibility found {local:bibcitHref($bibl/@pid/data())}</d>
+      <d class="warning">no responsibility found - {$bibl/@label/data()} {local:bibcitHref($bibl/@pid/data())}</d>
     else if ( $ref_id ) then
-      <d class="error">{$ref_id} - no matching bibliography item found </d>
+      <d class="error">no matching bibliography item found [{$ref_id}]</d>
     else
       <d class="error">REF attribute missing</d>
   )
@@ -72,9 +72,9 @@ declare function local:outputBiblDetails($ref_id, $bibl)
 declare function local:bibcitHref($id)
 {
   <span>
-    <a href="{$BASE_URL}/{$id}" target="_blank">view</a>
-    <a href="{$BASE_URL}/{$id}/datastream/MODS/edit" target="_blank">edit</a>
-    <a href="{$BASE_URL}/{$id}/workflow" target="_blank">add workflow</a>
+    <a title="{$id}" href="{$BASE_URL}/{$id}" target="_blank">view</a>
+    <a title="{$id}" href="{$BASE_URL}/{$id}/datastream/MODS/edit" target="_blank">edit</a>
+    <a title="{$id}" href="{$BASE_URL}/{$id}/workflow" target="_blank">add workflow</a>
   </span>
 };
 
@@ -88,6 +88,7 @@ return
   <div>
     <h2 class="xquery_result">
       <a href="{$doc_href}">{$doc_label}</a>
+      <!-- <span>Report details of bibcit/textscope elements and their linkage.</span> -->
     </h2>
     <div class="xquery_result_list">
     {
@@ -108,12 +109,16 @@ return
           <ul>
           {
           (: output placeholder and tag text of bibcit or textscope :)
+          <table>
+          {
           for $a in $accessible_seq//(TEXTSCOPE|BIBCIT)[
             (@REF = $group_by_id) or (fn:empty($group_by_id) and not(@REF))
             ]
           order by $a/@PLACEHOLDER/data()
           return
-            <li>REF:[{$a/@REF/data()}] - QTDIN:[{$a/@QTDIN/data()}] - Placeholder:[{$a/@PLACEHOLDER/data()}] - DBREF:[{$a/@DBREF/data()}] - Text:[{$a/text()}]</li>
+            <tr><td>Placeholder:[{$a/@PLACEHOLDER/data()}]</td><td>Text:[{$a/text()}]</td><!-- - QTDIN:[{$a/@QTDIN/data()}] - REF:[{$a/@REF/data()}]- DBREF:[{$a/@DBREF/data()}] --></tr>
+          }
+          </table>
           }
           </ul>
         </ul>

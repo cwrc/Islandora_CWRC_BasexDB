@@ -58,15 +58,15 @@ declare function local:outputEntityDetails($ref_id, $entity)
   return
   (
     if ( $workflow/activity[@stamp="orlando:PUB"] and $workflow/activity[@status="c"] ) then
-      <strong class="pub_c">{$entity/@label/data()} - id:{$ref_id} - PUB-C {local:entityHref($entity/@pid/data())}</strong>
+      <strong class="pub_c">{$entity/@label/data()} - PUB-C {local:entityHref($entity/@pid/data())}</strong>
     else if ( $workflow/activity[@stamp="orlando:CAS"] and $workflow/activity[@status="c"] ) then
-      <em class="cas_c">{$entity/@label/data()} - id:{$ref_id} - CAS-C {local:entityHref($entity/@pid/data())}</em>
+      <em class="cas_c">{$entity/@label/data()} - CAS-C {local:entityHref($entity/@pid/data())}</em>
     else if ( $workflow ) then
-      <d class="non_pub_c"><strong>No PUB-C/CAS-C</strong> - {$entity/@label/data()} - id:{$ref_id} {local:entityHref($entity/@pid/data())}</d>
+      <d class="non_pub_c">{$entity/@label/data()} - <strong>No PUB-C/CAS-C</strong> {local:entityHref($entity/@pid/data())}</d>
     else if ( $entity ) then
-      <d class="warning">{$ref_id} no responsibility found {local:entityHref($entity/@pid/data())}</d>
+      <d class="warning">no responsibility found - {$entity/@label/data()} {local:entityHref($entity/@pid/data())}</d>
     else if ( $ref_id ) then
-      <d class="error">{$ref_id} - no matching object found </d>
+      <d class="error">no matching entity found [{$ref_id}]</d>
     else
       <d class="error">REF attribute missing</d>
   )
@@ -76,9 +76,9 @@ declare function local:outputEntityDetails($ref_id, $entity)
 declare function local:entityHref($id)
 {
   <span>
-    <a href="{$BASE_URL}/{$id}" target="_blank">view</a>
-    <a href="{$BASE_URL}/{$id}/datastream/MODS/edit" target="_blank">edit</a>
-    <a href="{$BASE_URL}/{$id}/workflow" target="_blank">add workflow</a>
+    <a title="{$id}" href="{$BASE_URL}/{$id}" target="_blank">view</a>
+    <a title="{$id}" href="{$BASE_URL}/{$id}/datastream/MODS/edit" target="_blank">edit</a>
+    <a title="{$id}" href="{$BASE_URL}/{$id}/workflow" target="_blank">add workflow</a>
   </span>
 };
 
@@ -108,8 +108,9 @@ return
       (: find the core tag elements (not in responsibility statements :)
       for $item in $accessible_seq/CWRC_DS//(NAME|ORGNAME|PLACE|TITLE)[not(parent::RESPONSIBILITY)]
       let $group_by_id := $item/@REF/data()
-      group by $group_by_id
-      order by $group_by_id 
+      let $element := $item/name()
+      group by $element, $group_by_id
+      order by $element, $group_by_id 
       return
         <div>
         {
@@ -127,10 +128,11 @@ return
           let $elm := $a/name()
           let $ref := $a/@REF/data()
           let $alt := $a/@STANDARD/data()
+          where $elm = $element
           group by $elm, $str, $ref, $alt
           order by $elm, $str, $ref, $alt
           return
-            <li>[{$elm}] REF:[{$ref}] - STANDARD:[{$alt}] - Text:[{$str}]</li>
+            <li>[{$elm}] STANDARD:[{$alt}] - Text:[{$str}] <!--REF:[{$ref}]--></li>
 
         }
         </ul>
