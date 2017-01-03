@@ -52,7 +52,14 @@ return
                       <tr>
                         <td>Placeholder:[{$a/@PLACEHOLDER/data()}]</td>
                         <td>Text:[{$a/text()}]</td>
-                      <!-- DBREF:[{$a/@DBREF/data()}] - QTDIN:[{$a/@QTDIN/data()}] - -->
+                        {
+                          if ( exists($a/@QTDIN) )
+                          then
+                            <td>QTDIN:[{$a/@QTDIN/data()}]</td>
+                          else
+                            ()
+                        }
+                        <!-- DBREF:[{$a/@DBREF/data()}] - QTDIN:[{$a/@QTDIN/data()}] - -->
                       </tr>
                 }
                 </table>
