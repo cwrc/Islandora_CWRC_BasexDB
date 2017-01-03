@@ -2,6 +2,7 @@
 *
 * quotes within documents - biography/writing/events - check bibcit 
 *
+* find the quote elements and output - don't check nested QUOTE elements 
 *
 :)
 
@@ -33,7 +34,7 @@ return
     <div class="xquery_result_list">
       <ul>
       {
-        (: find the quote elements and output  :)
+        (: find the quote elements and output - don't check nested QUOTE elements  :)
         let $set := $accessible_seq/CWRC_DS//QUOTE
         return
           if ( count($set) > 0 )
@@ -43,19 +44,26 @@ return
             return
               if ( $bibcit_sibling ) 
               then
-                <li>{$item} 
-                <ul>
+                <li><strong>{$item}</strong>
+                <table>
                 {
                   for $a in $bibcit_sibling 
                   return 
-                    <li>DBREF:[{$a/@DBREF/data()}] - QTDIN:[{$a/@QTDIN/data()}] - Placeholder:[{$a/@PLACEHOLDER/data()}] - Text:[{$a/text()}]</li>
+                      <tr>
+                        <td>Placeholder:[{$a/@PLACEHOLDER/data()}]</td>
+                        <td>Text:[{$a/text()}]</td>
+                      <!-- DBREF:[{$a/@DBREF/data()}] - QTDIN:[{$a/@QTDIN/data()}] - -->
+                      </tr>
                 }
-                </ul>
+                </table>
                 </li>
+              else if ($item[ancestor::QUOTE])
+                then
+                <li><strong class="warning">{$item}</strong><div>Quote is nested within a quote - no bibcit test.</div></li>
               else
-                <li class="error">{$item}</li>
+                <li><strong class="error">{$item}</strong></li>
           else
-            <li>No quote elements found.</li>
+            <li><strong>No quote elements found.</strong></li>
       }
       </ul>
     </div>

@@ -31,19 +31,19 @@ return
       <a href="{$doc_href}">{$doc_label}</a>
     </h2>
     <div class="xquery_result_list">
-      <ul>
+      <table>
       {
       for $wfItem in $accessible_seq/WORKFLOW_DS/cwrc/workflow
       return
-          <li>
-            {data($wfItem/@date)} 
-            - {data($wfItem/@time)}
-            - {data($wfItem/@userID)}
-            - {data($wfItem/activity/@category)}
-            - {data($wfItem/activity/@stamp)}
-            - {data($wfItem/activity/@status)}
-          </li>
+          <tr>
+            <td>{data($wfItem/@date)}</td> 
+            <td>{data($wfItem/@time)}</td>
+            <td>{data($wfItem/@userID)}</td>
+            <td>{data($wfItem/activity/@category)}</td>
+            <td>{data($wfItem/activity/@stamp)}</td>
+            <td>{data($wfItem/activity/@status)}</td>
+          </tr>
       }
-      </ul>
+      </table>
     </div>
   </div>

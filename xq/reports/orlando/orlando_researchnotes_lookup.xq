@@ -40,7 +40,7 @@ return
           then
             for $item in $set 
             return
-              <li>{$item}</li>
+              <li class="warning">{$item}</li>
           else
               <li>No research note elements found.</li>
       }

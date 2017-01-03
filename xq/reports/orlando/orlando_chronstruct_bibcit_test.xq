@@ -34,13 +34,18 @@ return
       <ul>
       {
         (: test for chronstructs containing bibcits and output :)
-        let $set := $accessible_seq/CWRC_DS//CHRONSTRUCT[not(descendant::BIBCIT)]
+        (: look in both biography and writing and event in different paths :)
+        let $set := $accessible_seq/CWRC_DS/child::*[not(name()='EVENT')]/(descendant::CHRONSTRUCT[not(descendant::BIBCIT)] | EVENT/CHRONEVENT[not(descendant::BIBCIT)]/CHRONSTRUCT ) 
+        let $is_citations := $accessible_seq/CWRC_DS/(descendant::BIBCIT)[1] 
         return
           if ( fn:count($set) > 0 )
           then
             for $item in $set 
             return
               <li class="error">{fn:string-join($item, ' ')}</li>
+          else if ( fn:count($is_citations) = 0 )
+          then
+            <li class="error">No citations found.</li>
           else
             <li>Each chronstruct element contains at least one bibcit element.</li>
       }
