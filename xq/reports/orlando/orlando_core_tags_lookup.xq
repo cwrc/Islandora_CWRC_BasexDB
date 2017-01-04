@@ -127,7 +127,7 @@ return
           let $str := fn:string-join($a/text())
           let $elm := $a/name()
           let $ref := $a/@REF/data()
-          let $alt := $a/@STANDARD/data()
+          let $alt := $a/(@STANDARD|@REG)/data()
           where $elm = $element
           group by $elm, $str, $ref, $alt
           order by $elm, $str, $ref, $alt
