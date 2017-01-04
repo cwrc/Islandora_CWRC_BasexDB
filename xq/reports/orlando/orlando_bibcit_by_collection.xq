@@ -80,18 +80,28 @@ declare function local:bibcitHref($id)
 (: the main section: :)
 
 (: get all members of a collection :)
-let $accessible_seq := cwAccessibility:queryAccessControl(/)[@pid=$FEDORA_PID | [RELS-EXT_DS/rdf:RDF/rdf:Description/fedora:isMemberOfCollection/@rdf:resource=$FEDORA_PID]
+let $id := fn:string-join(("info:fedora/",$FEDORA_PID),'')
+let $accessible_seq := cwAccessibility:queryAccessControl(/)[@pid=$FEDORA_PID or RELS-EXT_DS/rdf:RDF/rdf:Description/fedora:isMemberOfCollection/@rdf:resource=$id]
 
 return
 <div>
-  for $item in $accessible_seq/CWRC_DS//(BIBCITS|TEXTSCOPES)
-  let $group_by_id := $item/@REF/data()
-  let $bibl := cwAccessibility:queryAccessControl(/)[@uri/data()=$group_by_id][WORKFLOW_DS/cwrc/workflow/activity[not(@stamp="orlando:PUB" and @status="c")] 
-  where exists($bibl)
+  {
+  for $item in $accessible_seq/CWRC_DS//(BIBCIT|TEXTSCOPE)
+  let $group_by_id := $item/@REF/data() 
+  (: only bibl items that are not pub-c :)
+  let $bibl := cwAccessibility:queryAccessControl(/)[@uri/data()=$group_by_id][not((WORKFLOW_DS/cwrc/workflow/activity[@stamp="orlando:PUB" and @status="c"])[1])]  
+(:
+  let $bibl := cwAccessibility:queryAccessControl(/)[@uri/data()=$group_by_id]
+:)
+  where exists($bibl) or not(exists($group_by_id))
   group by $group_by_id
   return
-    return local:outputBiblDetails($group_by_id, $bibl, $accessible_seq)
-
+    <div>
+      { 
+      local:outputBiblDetails($group_by_id, $bibl, $accessible_seq) 
+      }
+    </div>
+  }
 </div>
 
 
