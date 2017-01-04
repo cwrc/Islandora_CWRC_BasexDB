@@ -54,9 +54,9 @@ declare function local:outputBiblDetails($ref_id, $bibl)
   let $workflow := $bibl/WORKFLOW_DS/cwrc/workflow
   return
   (
-    if ( $workflow/activity[@stamp="orlando:PUB"] and $workflow/activity[@status="c"] ) then
+    if ( $workflow/activity[@stamp="orlando:PUB" and @status="c"] ) then
       <strong class="pub_c">PUB-C - {$bibl/@label/data()} {local:bibcitHref($bibl/@pid/data())}</strong>
-    else if ( $workflow/activity[@stamp="orlando:CAS"] and $workflow/activity[@status="c"] ) then
+    else if ( $workflow/activity[@stamp="orlando:CAS" and @status="c"] ) then
       <em class="cas_c">CAS-C without PUB-C - {$bibl/@label/data()} {local:bibcitHref($bibl/@pid/data())}</em>
     else if ( $workflow ) then
       <d class="non_pub_c"><strong>No PUB-C/CAS-C Workflow</strong> - {$bibl/@label/data()} {local:bibcitHref($bibl/@pid/data())}</d>

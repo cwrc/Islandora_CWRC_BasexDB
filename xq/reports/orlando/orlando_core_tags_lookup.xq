@@ -57,9 +57,9 @@ declare function local:outputEntityDetails($ref_id, $entity)
   let $workflow := $entity/WORKFLOW_DS/cwrc/workflow
   return
   (
-    if ( $workflow/activity[@stamp="orlando:PUB"] and $workflow/activity[@status="c"] ) then
+    if ( $workflow/activity[@stamp="orlando:PUB" and @status="c"] ) then
       <strong class="pub_c">{$entity/@label/data()} - PUB-C {local:entityHref($entity/@pid/data())}</strong>
-    else if ( $workflow/activity[@stamp="orlando:CAS"] and $workflow/activity[@status="c"] ) then
+    else if ( $workflow/activity[@stamp="orlando:CAS" and @status="c"] ) then
       <em class="cas_c">{$entity/@label/data()} - CAS-C {local:entityHref($entity/@pid/data())}</em>
     else if ( $workflow ) then
       <d class="non_pub_c">{$entity/@label/data()} - <strong>No PUB-C/CAS-C</strong> {local:entityHref($entity/@pid/data())}</d>
