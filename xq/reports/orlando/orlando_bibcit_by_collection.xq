@@ -60,8 +60,8 @@ declare function local:outputBiblDetails($ref_id, $bibl, $accessible_seq)
 declare function local:listObjectContaining($id, $accessible_seq)
 {
   for $i in $accessible_seq[CWRC_DS//(BIBCIT|TEXTSCOPE)[@REF = $id or not(exists(@REF))]]
-  let $doc_href := fn:concat($BASE_URL,'/',$accessible_seq/@pid/data())
-  let $doc_label := fn:string-join( ($accessible_seq/@label/data(),  $accessible_seq/@pid/data()), ' - ')
+  let $doc_href := fn:concat($BASE_URL,'/',$i/@pid/data())
+  let $doc_label := fn:string-join( ($i/@label/data(),  $i/@pid/data()), ' - ')
   order by $doc_label 
   return 
     <li><a href="{$doc_href}">{$doc_label}</a></li>
