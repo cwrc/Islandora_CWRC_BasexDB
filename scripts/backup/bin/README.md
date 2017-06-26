@@ -32,4 +32,7 @@ basex_backup.cron
  * sudo ln -s /var/basex/backup/bin/basex_backup.cron /etc/cron.d/basex_backup.cron
 
 
-
+restore
+-
+copy from: /var/basex/backup/backup.daily/ to /var/basex/BaseXData
+execute 'restore db_name' from basexclient
