@@ -195,11 +195,13 @@ EOQ;
      */
 
     $query = <<<EOQ
+    PREFIX fedora-model: <info:fedora/fedora-system:def/model#>
+    PREFIX fedora-view: <info:fedora/fedora-system:def/view#>
     SELECT ?object
     FROM <#ri>
     WHERE {
-      ?object <fedora-view:lastModifiedDate> ?modified ;
-      <fedora-model:hasModel> <info:fedora/fedora-system:FedoraObject-3.0>;
+      ?object fedora-view:lastModifiedDate ?modified ;
+      fedora-model:hasModel <info:fedora/fedora-system:FedoraObject-3.0>;
     }
 EOQ;
 
@@ -452,11 +454,13 @@ function drush_islandora_cwrc_basexdb_load_by_last_modified()
     $startDate = "2015-09-17T15:29:21.374Z";
 
     $query = <<<EOQ
+    PREFIX fedora-model: <info:fedora/fedora-system:def/model#>
+    PREFIX fedora-view: <info:fedora/fedora-system:def/view#>
     SELECT ?object
     FROM <#ri>
     WHERE {
-      ?object <fedora-view:lastModifiedDate> ?modified ;
-      <fedora-model:hasModel> <info:fedora/fedora-system:FedoraObject-3.0>;
+      ?object fedora-view:lastModifiedDate ?modified ;
+      fedora-model:hasModel <info:fedora/fedora-system:FedoraObject-3.0>;
       FILTER ( 
         ?modified > '$startDate'^^<xml-schema:dateTime>
       )
