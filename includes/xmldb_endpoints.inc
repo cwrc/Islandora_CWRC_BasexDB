@@ -8,6 +8,7 @@
 //define('ISLANDORA_PLOTIT_XQUERY_ID', 'test3.xq');
 define('ISLANDORA_PLOTIT_XQUERY_ID', 'cwrc_plot_it_json.xq');
 define('ISLANDORA_EAP_XQUERY_ID', 'cwrc_entity_aggregation.xq');
+define('ISLANDORA_EAP_XQ', 'eap/cwrc_entity_aggregation.xq');
 define('ISLANDORA_EAP_EXTERNAL_MISSING_STUBS', 'cwrc_list_missing_entity_stubs.xq');
 define('ISLANDORA_ORLANDO_MIGRATE_PERSON_ORG', 'orlando_migration/orlando_entity_lookup_person_org.xq');
 define('ISLANDORA_ORLANDO_MIGRATE_BIBL', 'orlando_migration/orlando_entity_lookup_bibl.xq');
@@ -161,6 +162,7 @@ function islandora_cwrc_basexdb_whitelist_path($str)
   $islandora_cwrc_basexdb_whitelist = array(
     ISLANDORA_PLOTIT_XQUERY_ID => ISLANDORA_PLOTIT_XQUERY_ID
     , ISLANDORA_EAP_XQUERY_ID => ISLANDORA_EAP_XQUERY_ID
+    , basename(ISLANDORA_EAP_XQ) => ISLANDORA_EAP_XQ
     , ISLANDORA_EAP_EXTERNAL_MISSING_STUBS => ISLANDORA_EAP_EXTERNAL_MISSING_STUBS
     , basename(ISLANDORA_ORLANDO_MIGRATE_PERSON_ORG) => ISLANDORA_ORLANDO_MIGRATE_PERSON_ORG
     , basename(ISLANDORA_ORLANDO_MIGRATE_BIBL) => ISLANDORA_ORLANDO_MIGRATE_BIBL
