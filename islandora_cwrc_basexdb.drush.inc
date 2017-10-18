@@ -655,6 +655,7 @@ function drush_islandora_cwrc_basexdb_test_xq()
  */
   $keyValueArray = array(
     "FEDORA_PID" => "cwrc:c0e3a5ea-457d-466c-8a66-54a0d3be8a1a"
+    , "COMPONENT_TYPE" => "('entries_about','entries_mentioning')"
     );
   $result = islandora_cwrc_exec_xquery($xq_file, $keyValueArray);
   

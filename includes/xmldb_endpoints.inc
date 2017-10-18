@@ -109,7 +109,13 @@ function islandora_cwrc_exec_xquery($xquery, $valArray )
   foreach ( $valArray as $key=>$value)
   {
     $value = islandora_cwrc_basexdb_whitelist_xquery($value);
-    $tmp = $tmp . ", '" . $key .  "' : '" . $value . "'";
+    // if value is a multivalued map ('a','b') don't add '
+    if ( preg_match('/^[(].*[)]$/', $value) ) {
+      $tmp = $tmp . ", '" . $key .  "' : " . $value;
+    }
+    else {
+      $tmp = $tmp . ", '" . $key .  "' : '" . $value . "'";
+    }
   }
   // add some constants in addition to the parameters passed into the function
   $tmp = $tmp . ", 'BASE_URL' : '".$base_url."/islandora/object'";
