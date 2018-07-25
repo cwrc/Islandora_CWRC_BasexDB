@@ -20,6 +20,8 @@ define('ISLANDORA_ORLANDO_RPT_RESEARCH_NOTES_LUP', 'reports/orlando/orlando_rese
 define('ISLANDORA_ORLANDO_RPT_WORKFLOW_NEW', 'reports/orlando/orlando_workflow_new.xq');
 define('ISLANDORA_MISC_RPT_EAP_TEST', 'reports/misc/misc_test_eap_link.eq');
 define('ISLANDORA_ORLANDO_RPT_BIBCIT_COLLECTION', 'reports/orlando/orlando_bibcit_by_collection.xq');
+define('ISLANDORA_ORLANDO_TAG_SEARCH', 'xml_tag_search.xq');
+define('ISLANDORA_ORLANDO_TAG_SEARCH_FACETS', 'xml_tag_search_facets.xq');
 
 
 /**
@@ -181,6 +183,8 @@ function islandora_cwrc_basexdb_whitelist_path($str)
     , basename(ISLANDORA_ORLANDO_RPT_WORKFLOW_NEW) => ISLANDORA_ORLANDO_RPT_WORKFLOW_NEW
     , basename(ISLANDORA_MISC_RPT_EAP_TEST) => ISLANDORA_MISC_RPT_EAP_TEST
     , basename(ISLANDORA_ORLANDO_RPT_BIBCIT_COLLECTION) => ISLANDORA_ORLANDO_RPT_BIBCIT_COLLECTION
+    , basename(ISLANDORA_ORLANDO_TAG_SEARCH) => ISLANDORA_ORLANDO_TAG_SEARCH
+    , basename(ISLANDORA_ORLANDO_TAG_SEARCH_FACETS) => ISLANDORA_ORLANDO_TAG_SEARCH_FACETS 
   );
 
   return $islandora_cwrc_basexdb_whitelist[basename($str)];
