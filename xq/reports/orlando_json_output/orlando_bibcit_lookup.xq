@@ -65,10 +65,10 @@ let $bibcit_id_list := distinct-values($accessible_seq/CWRC_DS//(BIBCIT|TEXTSCOP
 
 return
   <json type="object">
-    (: output details of the doc :)
+    { (: output details of the doc :) }
     <id>{$doc_id}</id>
     <label>{$doc_label}</label>
-    (: output details of the report :)
+    { (: output details of the report :) }
     <details type="array">
     {
       (: for each citation in the source doc :)
@@ -77,10 +77,10 @@ return
       return
           <_ type="object">
 
-          (: output the id of the citation :)
+          { (: output the id of the citation :) }
           <biblID>{$group_by_id}</biblID>
           
-          (: output the status of the link bibliography :)
+          { (: output the status of the link bibliography :) }
           {
             let $bibl := cwAccessibility:queryAccessControl(/)[@pid/data()=$group_by_id or MODS_DS/mods:mods/mods:recordInfo/mods:recordIdentifier[@source="Orlando"]/text()=$group_by_id]
             let $workflow := $bibl/WORKFLOW_DS/cwrc/workflow
@@ -111,7 +111,7 @@ return
             )
           }
 
-          (: output details of the document citation for checking :)
+          { (: output details of the document citation for checking :) }
           <localReferences type="array">
           { 
            for $a in $accessible_seq//(TEXTSCOPE|BIBCIT)[@DBREF = $group_by_id or @REF = $group_by_id]
