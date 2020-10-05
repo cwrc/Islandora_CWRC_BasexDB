@@ -39,8 +39,11 @@ function islandora_cwrc_basexdb_drush_command()
 
   $items['islandora_cwrc_basexdb_load_by_last_modified'] = array(
     'description' => 'Load XML Database',
+    'options' => array(
+      'start_date' => 'start date "2005-06-17T15:29:21.374Z"',
+    ),
     'examples' => array(
-      'drush -u 1 islandora_cwrc_basexdb_load_by_last_modified'
+      'drush -u 1 islandora_cwrc_basexdb_load_by_last_modified --start_date="2005-06-17T15:29:21.374Z"'
     ),
     'bootstrap' => DRUSH_BOOTSTRAP_MAX
   );
@@ -434,6 +437,9 @@ function drush_islandora_cwrc_basexdb_load_by_last_modified()
     module_load_include('inc', 'islandora_cwrc_basexdb', 'includes/xmldb_basex');
     include_once(libraries_get_path(ISLANDORA_CWRC_BASEXDB_LIB) . '/BaseXClient.php');
 
+    $startDate = drush_get_option('start_date', '2020-10-04T15:29:21.374Z');
+    DateTime::createFromFormat('Y-m-d\TH:i:s+',$startDate);
+
     // connection to Tuque/Islandora
     $fedoraConnection = null;
     drush_islandora_cwrc_basexdb_init($fedoraConnection);
@@ -451,7 +457,7 @@ function drush_islandora_cwrc_basexdb_load_by_last_modified()
 
     //$startDate = "2015-06-17T15:29:21.374Z";
     //$startDate = "2005-06-17T15:29:21.374Z";
-    $startDate = "2015-09-17T15:29:21.374Z";
+    //$startDate = "2015-09-17T15:29:21.374Z";
 
     $query = <<<EOQ
     PREFIX fedora-model: <info:fedora/fedora-system:def/model#>

@@ -137,7 +137,7 @@ class xmldb_basex {
       {
         print("update object: ".$fedora_object->id." at ".$fedora_time_str."\n");
         $ret = $this->basexdb_do_replace($fedora_object);
-        $this->basexdb_execute_query_without_access_control("helpers/cwrc_place_cache.xq");
+        //$this->basexdb_execute_query_without_access_control("helpers/cwrc_place_cache.xq");
         //$ret .= $this->basexdb_command_optimize($fedora_object);
         return $ret;
       }
