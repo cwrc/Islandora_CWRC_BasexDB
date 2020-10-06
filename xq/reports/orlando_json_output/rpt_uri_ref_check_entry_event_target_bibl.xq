@@ -40,6 +40,7 @@ declare function local:get_pid_from_uri($uri as xs:string) as xs:string
       let $doc_id := $entry/@pid/data()
       let $doc_label := $ds/ORLANDOHEADER/FILEDESC/TITLESTMT/DOCTITLE/text()
       let $bibl_id_list := distinct-values($ds//(BIBCIT|TEXTSCOPE)/@REF/data())
+      let $entity_id_list := distinct-values($ds//(NAME|ORGNAME)/@REF/data())
       order by $doc_id
     
       return
@@ -47,6 +48,7 @@ declare function local:get_pid_from_uri($uri as xs:string) as xs:string
           { (: output details of the doc :) }
           <id>{$doc_id}</id>
           <label>{$doc_label}</label>
+
           <biblDetails type="array">
           {
             for $bibl_id in $bibl_id_list
@@ -91,6 +93,49 @@ declare function local:get_pid_from_uri($uri as xs:string) as xs:string
                 
           }
           </biblDetails>
+ 
+          <entityDetails type="array">
+          {
+            for $entity_id in $entity_id_list
+            order by $entity_id
+            return
+              <_ type="object">
+                <entityId>{$entity_id}</entityId>
+                {
+                  let $target_pid := local:get_pid_from_uri($entity_id)
+                  let $target := /obj[@pid/data()=$target_pid]
+                  let $target_label := $target/@label/data()
+                  let $target_type := $target/RELS-EXT_DS/rdf:RDF/rdf:Description/fedora-model:hasModel/@rdf:resource/data() 
+                  let $workflow := $target/WORKFLOW_DS/cwrc/workflow
+                  let $status :=
+                    if ($workflow/activity[@stamp="orlando:PUB"] and $workflow/activity[@status="c"] ) then
+                        "PUB-C"
+                      else if ( $target ) then
+                        "WARNING"
+                      else 
+                      "ERROR"
+                  let $log :=
+                    if ( not($target) ) then
+                      "No linked bibliography item found"
+                    else if ( not($workflow) ) then
+                      "No responsibility statements found"
+                    else 
+                      ()
+                  return
+                    (
+                      <linkedObject type="object">
+                        <targetPid>{$target_pid}</targetPid>
+                        <targetLabel>{$target_label}</targetLabel>
+                        <targetType>{$target_type}</targetType>
+                        <status>{$status}</status>
+                        <log>{$log}</log>
+                      </linkedObject>
+                    )
+                }
+              </_>
+                
+          }
+          </entityDetails>
           
         </item>
 }    
