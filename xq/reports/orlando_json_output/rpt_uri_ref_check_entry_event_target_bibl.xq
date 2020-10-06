@@ -3,9 +3,11 @@
 * Check the uri's present in the entry for corresponding target
 * Returns a JSON response
 :)
-
-
 xquery version "3.0" encoding "utf-8";
+
+(:
+module namespace cwRpt = "cwReport";
+:)
 
 declare namespace mods = "http://www.loc.gov/mods/v3";
 declare namespace dc = "http://purl.org/dc/elements/1.1/";
@@ -20,8 +22,10 @@ declare option output:indent   "yes";
 
 declare variable $BASE_URL external := "https://commons.cwrc.ca/";
 
-
-
+declare function local:get_pid_from_uri($uri)
+{
+  substring-after($uri,'https://commons.cwrc.ca/')
+};
 
 
 <json type="object">
@@ -51,7 +55,7 @@ return
             <_ type="object">
               <biblId>{$bibl_id}</biblId>
               {
-                let $target_pid := substring-after($bibl_id,'https://commons.cwrc.ca/')
+                let $target_pid := local:get_pid_from_uri($bibl_id)
                 let $target := /obj[@pid/data()=$target_pid]
                 let $target_label := $target/@label/data()
                 let $workflow := $target/WORKFLOW_DS/cwrc/workflow
