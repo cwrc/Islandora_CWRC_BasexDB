@@ -67,7 +67,7 @@ declare function local:get_pid_from_uri($uri as xs:string) as xs:string
                       "ERROR"
                   let $log :=
                     if ( not($target) ) then
-                      "No linked bibliography item found"
+                      "No linked item found"
                     else if ( not($workflow) ) then
                       "No responsibility statements found"
                     else 
