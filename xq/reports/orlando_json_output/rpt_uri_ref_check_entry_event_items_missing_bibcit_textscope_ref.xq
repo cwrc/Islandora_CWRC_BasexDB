@@ -22,29 +22,33 @@ declare option output:indent   "yes";
 <json type="object">
 {
 
-  let $entry_list := /obj[RELS-EXT_DS/rdf:RDF/rdf:Description/fedora:isMemberOfCollection/@rdf:resource/data()=("info:fedora/orlando:c5f53703-1f08-4c72-9425-2874bb7cf544","info:fedora/orlando:e6b8f85f-5a79-4124-b2a2-3b41c3ddb2cf") ][CWRC_DS/(ENTRY|EVENT)]
+  let $entry_list := /obj[RELS-EXT_DS/rdf:RDF/rdf:Description/fedora:isMemberOfCollection/@rdf:resource/data()=("info:fedora/orlando:c5f53703-1f08-4c72-9425-2874bb7cf544","info:fedora/orlando:e6b8f85f-5a79-4124-b2a2-3b41c3ddb2cf") ][CWRC_DS/(ENTRY|EVENT)//(BIBCIT|TEXTSCOPE)[not(@REF)]]
   (: let $entry_list := /obj[@pid/data()='orlando:laurma'] :)
 
   return
-    for $entry in $entry_list
-      let $ds := $entry/CWRC_DS/(ENTRY|EVENT)
-      let $doc_id := $entry/@pid/data()
-      let $doc_label := $ds/ORLANDOHEADER/FILEDESC/TITLESTMT/DOCTITLE/text()
-      let $tag_list := $ds//(BIBCIT|TEXTSCOPE)
-      order by $doc_id
-    
-      return
-        for $item in $tag_list
-          let $item_label := $item/(@PLACEHOLDER/data())
-          let $item_dbref := $item/(@DBREF/data())
-          let $item_text := $item/text()
-          let $element_name := $item/name()
-          return
-            if ( not($item/@REF) ) then
-              <_ type="object">
-                 <id>{$doc_id}</id>
-                 <log>"No REF attribute found" [{$element_name}] element with PLACEHOLDER attribute [{$item_label}] text [{$item_text}] DBREF [{$item_dbref}]</log>
-              </_>
-       
+    <checks type="array">
+    {
+      for $entry in $entry_list
+        let $ds := $entry/CWRC_DS/(ENTRY|EVENT)
+        let $doc_id := $entry/@pid/data()
+        let $tag_list := $ds//(BIBCIT|TEXTSCOPE)
+        order by $doc_id
+      
+        return
+          for $item in $tag_list
+            let $item_label := $item/(@PLACEHOLDER/data())
+            let $item_dbref := $item/(@DBREF/data())
+            let $item_text := $item/text()
+            let $element_name := $item/name()
+            return
+              if ( not($item/@REF) ) then
+                <_ type="object">
+                  <id>{$doc_id}</id>
+                  <log>No REF attribute found: [{$element_name}] element with PLACEHOLDER attribute [{$item_label}] text [{$item_text}] DBREF [{$item_dbref}]</log>
+                </_>
+              else 
+                ()
+     }
+     </checks>
 }    
 </json>
