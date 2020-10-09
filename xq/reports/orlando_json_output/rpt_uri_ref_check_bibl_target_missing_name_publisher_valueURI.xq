@@ -21,7 +21,7 @@ declare option output:indent   "yes";
 <json type="object">
 {
 
-  let $bibl_list := /obj[RELS-EXT_DS/rdf:RDF/rdf:Description/fedora:isMemberOfCollection/@rdf:resource/data()=("info:fedora/orlando:f1caf219-2d9a-4662-b52c-d40ab08fbf3f")][MODS_DS/mods:modsCollection//(mods:name|mods:publisher)[not(@valueURI)]]
+  let $bibl_list := /obj[RELS-EXT_DS/rdf:RDF/rdf:Description/fedora:isMemberOfCollection/@rdf:resource/data()=("info:fedora/orlando:7397f8b2-10d9-48b6-8af5-6c2cd24f50b5")][MODS_DS/mods:modsCollection//(mods:name|mods:publisher)[not(@valueURI)]]
   (: 
   let $bibl_list := /obj[@pid/data()='orlando:5d31c2bc-9f4b-474f-bd6b-0de76d8f3586'] 
   :)
