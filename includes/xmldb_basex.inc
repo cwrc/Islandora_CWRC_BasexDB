@@ -68,15 +68,15 @@ class xmldb_basex {
     $this->basexSession->execute("SET CHOP false;");
 
     // indexing
-    $this->basexSession->execute("SET AUTOOPTIMIZE true;"); //ToDo check if required - speed
-    $this->basexSession->execute("SET UPDINDEX true;");// ToDo: check if required - spped
+    // $this->basexSession->execute("SET AUTOOPTIMIZE true;"); //ToDo check if required - speed
+    // $this->basexSession->execute("SET UPDINDEX true;");// ToDo: check if required - spped
 
-    $this->basexSession->execute("SET TEXTINDEX true;");
-    $this->basexSession->execute("SET ATTRINDEX true;");
-    $this->basexSession->execute("SET FTINDEX true;");
+    // $this->basexSession->execute("SET TEXTINDEX true;");
+    // $this->basexSession->execute("SET ATTRINDEX true;");
+    // $this->basexSession->execute("SET FTINDEX true;");
 
     // stemming
-    $this->basexSession->execute("SET STEMMING true;");
+    // $this->basexSession->execute("SET STEMMING true;");
 
     // 
     $this->basexSession->execute("SET QUERYPATH " . (string)$this->config->basexdb_querypath . ";");
