@@ -41,9 +41,10 @@ function islandora_cwrc_basexdb_drush_command()
     'description' => 'Load XML Database',
     'options' => array(
       'start_date' => 'start date "2005-06-17T15:29:21.374Z"',
+      'end_date' => 'end date "2005-06-17T15:29:21.374Z"',
     ),
     'examples' => array(
-      'drush -u 1 islandora_cwrc_basexdb_load_by_last_modified --start_date="2005-06-17T15:29:21.374Z"'
+      'drush -u 1 islandora_cwrc_basexdb_load_by_last_modified --start_date="2005-06-17T15:29:21.374Z" --end_date="2020-12-04T16:28:12.274Z"'
     ),
     'bootstrap' => DRUSH_BOOTSTRAP_MAX
   );
@@ -439,6 +440,9 @@ function drush_islandora_cwrc_basexdb_load_by_last_modified()
 
     $startDate = drush_get_option('start_date', '2020-10-04T15:29:21.374Z');
     DateTime::createFromFormat('Y-m-d\TH:i:s+',$startDate);
+    
+    $endDate = drush_get_option('end_date', '2020-12-04T15:29:21.374Z');
+    DateTime::createFromFormat('Y-m-d\TH:i:s+',$endDate);
 
     // connection to Tuque/Islandora
     $fedoraConnection = null;
@@ -462,15 +466,17 @@ function drush_islandora_cwrc_basexdb_load_by_last_modified()
     $query = <<<EOQ
     PREFIX fedora-model: <info:fedora/fedora-system:def/model#>
     PREFIX fedora-view: <info:fedora/fedora-system:def/view#>
-    SELECT ?object
+    SELECT ?object ?modified
     FROM <#ri>
     WHERE {
       ?object fedora-view:lastModifiedDate ?modified ;
       fedora-model:hasModel <info:fedora/fedora-system:FedoraObject-3.0>;
       FILTER ( 
         ?modified > '$startDate'^^<xml-schema:dateTime>
+        && ?modified < '$endDate'^^<xml-schema:dateTime>
       )
     }
+    ORDER BY ASC(?modified)
 EOQ;
 
     drush_print($query);
@@ -486,7 +492,7 @@ EOQ;
     foreach ($results as $result) {
       try {
         $pid = $result['object']['value']; // match SparQL select term
-        drush_print($pid);
+        drush_print($pid . " " . $result['modified']['value']);
         $fedora_object = islandora_object_load($pid);
         drush_print($basexObj->basexdb_add_content($fedora_object));
         drush_print($basexObj->basexSession->info());
